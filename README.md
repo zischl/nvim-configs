@@ -1,7 +1,7 @@
 # Neovim Base Config
 
 # Requirements:
--- Windows
+## -- Windows
 winget install -e --id OpenJS.NodeJS
 
 
