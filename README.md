@@ -2,7 +2,7 @@
 
 # Requirements:
 ## -- Windows
-make
+make  
 npm
 
 # Setup
