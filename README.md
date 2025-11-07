@@ -8,8 +8,8 @@ npm
 # Setup
 Winget :  
 ```
-winget install -e --id MSYS2.MSYS2
-winget install -e --id OpenJS.NodeJS
+winget install -e --id MSYS2.MSYS2 --source winget
+winget install -e --id OpenJS.NodeJS --source winget
 ```
   
 Run in MSYS2 MinGW64 terminal :  
