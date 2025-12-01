@@ -1,14 +1,11 @@
+-- Select all
+vim.keymap.set("n", "<C-a>", "gg<S-v>G")
+
 --general
 vim.keymap.set("i", "<C-j>", "<Esc>")
 
-vim.keymap.set("i", "<C-BS>", "<C-w>", { silent = true })
-
-vim.keymap.set("n", "<A-j>", ":m .+1<CR>==", { desc = "Move line down" })
-vim.keymap.set("n", "<A-k>", ":m .-2<CR>==", { desc = "Move line up" })
-
-vim.keymap.set("n", "<C-s>", ":w<CR>", { silent = true })
-vim.keymap.set("i", "<C-s>", "<Esc>:w<CR>a", { silent = true })
-vim.keymap.set({ "n", "i" }, "<C-s><C-s>", ":wa<CR>", { silent = true })
+vim.keymap.set("n", "<a-j>", ":m .+1", { silent = true, desc = "move line down" })
+vim.keymap.set("n", "<a-k>", ":m .-2", { silent = true, desc = "move line up" })
 
 vim.keymap.set("n", "<C-q>", ":q<CR>", { silent = true })
 vim.keymap.set("i", "<C-q>", "<Esc>:q<CR>", { silent = true })
@@ -17,6 +14,21 @@ vim.keymap.set("i", "<C-q><C-q>", "<Esc>:q!<CR>", { silent = true })
 
 -- Buffer Controls
 vim.keymap.set("n", "<leader>bd", ":bd<CR>")
+
+-- New tab
+vim.keymap.set("n", "te", ":tabedit")
+vim.keymap.set("n", "<tab>", ":tabnext<Return>")
+vim.keymap.set("n", "<s-tab>", ":tabprev<Return>")
+
+-- Split window
+vim.keymap.set("n", "ss", ":split<Return>")
+vim.keymap.set("n", "sv", ":vsplit<Return>")
+
+-- Resize window
+vim.keymap.set("n", "<C-w><left>", "<C-w><")
+vim.keymap.set("n", "<C-w><right>", "<C-w>>")
+vim.keymap.set("n", "<C-w><up>", "<C-w>+")
+vim.keymap.set("n", "<C-w><down>", "<C-w>-")
 
 --Comment Bind
 vim.api.nvim_set_keymap("n", "<C-/>", "gcc", { noremap = false })
@@ -27,11 +39,20 @@ vim.api.nvim_set_keymap("n", "<leader>e", ":NvimTreeToggle<CR>", { silent = true
 --LSP
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float)
 vim.keymap.set("n", "]d", function()
-	vim.diagnostic.goto_next()
-	vim.diagnostic.open_float()
+  vim.diagnostic.goto_next()
+  vim.diagnostic.open_float()
 end, { desc = "Next diagnostic" })
 
 vim.keymap.set("n", "[d", function()
-	vim.diagnostic.goto_prev()
-	vim.diagnostic.open_float()
+  vim.diagnostic.goto_prev()
+  vim.diagnostic.open_float()
 end, { desc = "Prev diagnostic" })
+
+
+local function ToggleRelativeNumbering()
+  if vim.wo.relativenumber then
+    vim.wo.relativenumber = true
+  else
+    vim.wo.relativenumber = false
+  end
+end
