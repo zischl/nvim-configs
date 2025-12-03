@@ -18,6 +18,7 @@ return {
         "typescript",
         "tsx",
         "json",
+        "html",
       },
     },
     config = function(_, opts)

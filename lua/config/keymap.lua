@@ -12,6 +12,15 @@ vim.keymap.set("i", "<C-q>", "<Esc>:q<CR>", { silent = true })
 vim.keymap.set("n", "<C-q><C-q>", ":q!<CR>", { silent = true })
 vim.keymap.set("i", "<C-q><C-q>", "<Esc>:q!<CR>", { silent = true })
 
+-- Save the current buffer/file
+vim.keymap.set('n', '<Space>w', ':w<CR>', { desc = 'Save File' })
+
+-- Close the current window/buffer
+vim.keymap.set('n', '<Space>q', ':q<CR>', { desc = 'Quit Window' })
+
+-- Close all windows and exit Neovim
+vim.keymap.set('n', '<Space>Q', ':qa<CR>', { desc = 'Quit All' })
+
 -- Buffer Controls
 vim.keymap.set("n", "<leader>bd", ":bd<CR>")
 
@@ -29,6 +38,10 @@ vim.keymap.set("n", "<C-w><left>", "<C-w><")
 vim.keymap.set("n", "<C-w><right>", "<C-w>>")
 vim.keymap.set("n", "<C-w><up>", "<C-w>+")
 vim.keymap.set("n", "<C-w><down>", "<C-w>-")
+
+-- Increment/decrement
+vim.keymap.set("n", "+", "<C-x>")
+vim.keymap.set("n", "-", "<C-a>")
 
 --Comment Bind
 vim.api.nvim_set_keymap("n", "<C-/>", "gcc", { noremap = false })
