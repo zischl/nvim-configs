@@ -4,8 +4,8 @@ vim.keymap.set("n", "<C-a>", "gg<S-v>G")
 --general
 vim.keymap.set("i", "<C-j>", "<Esc>")
 
-vim.keymap.set("n", "<a-j>", ":m .+1", { silent = true, desc = "move line down" })
-vim.keymap.set("n", "<a-k>", ":m .-2", { silent = true, desc = "move line up" })
+vim.keymap.set("n", "<A-j>", ":m .+1<CR>", { silent = true, desc = "move line down" })
+vim.keymap.set("n", "<A-k>", ":m .-2<CR>", { silent = true, desc = "move line up" })
 
 vim.keymap.set("n", "<C-q>", ":q<CR>", { silent = true })
 vim.keymap.set("i", "<C-q>", "<Esc>:q<CR>", { silent = true })
@@ -69,3 +69,18 @@ local function ToggleRelativeNumbering()
     vim.wo.relativenumber = false
   end
 end
+
+vim.keymap.set("n", "<S>", function()
+  if vim.wo.relativenumber then
+    vim.wo.relativenumber = true
+  else
+    vim.wo.relativenumber = false
+  end
+end)
+
+--Refactor
+vim.keymap.set("n", "<leader>rr", function()
+  require("refactoring").select_refactor({
+    show_success_message = true,
+  })
+end, { expr = false, silent = true, noremap = true })

@@ -20,9 +20,34 @@ return {
         "json",
         "html",
       },
+
+      textobjects = {
+        enable = true,
+
+        move = {
+          enable = true,
+          set_jumps = true,
+          goto_next_start = {
+            ["]]"] = "@function.outer",
+            ["]c"] = "@class.outer",
+            ["]i"] = "@conditional.outer",
+          },
+          goto_previous_start = {
+            ["[[]"] = "@function.outer",
+            ["[c"] = "@class.outer",
+            ["[i"] = "@conditional.outer",
+          },
+        },
+        select = {
+          enable = true,
+        },
+      },
     },
     config = function(_, opts)
       require("nvim-treesitter.configs").setup(opts)
     end,
+  },
+  {
+    'nvim-treesitter/nvim-treesitter-textobjects',
   },
 }
