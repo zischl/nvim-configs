@@ -1,7 +1,14 @@
 local opts = {
   ensure_installed = { "efm", "lua_ls", "clangd", "pyright", "ts_ls" },
   automatic_installation = true,
+  automatic_enable = {
+    exclude = {
+      'jdtls'
+    }
+  }
 }
+
+
 
 return {
   {
@@ -10,6 +17,7 @@ return {
     dependencies = {
       { "mason-org/mason.nvim", opts = {} },
       "neovim/nvim-lspconfig",
+      "mfussenegger/nvim-jdtls",
     },
 
     handlers = {

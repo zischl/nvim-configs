@@ -20,31 +20,22 @@ return {
         "json",
         "html",
       },
-
-      textobjects = {
-        enable = true,
-
-        move = {
-          enable = true,
-          set_jumps = true,
-          goto_next_start = {
-            ["]]"] = "@function.outer",
-            ["]c"] = "@class.outer",
-            ["]i"] = "@conditional.outer",
-          },
-          goto_previous_start = {
-            ["[[]"] = "@function.outer",
-            ["[c"] = "@class.outer",
-            ["[i"] = "@conditional.outer",
-          },
-        },
-        select = {
-          enable = true,
-        },
-      },
     },
     config = function(_, opts)
       require("nvim-treesitter.configs").setup(opts)
+
+      -- if require('nvim-treesitter.indent').get_indent then
+      --   vim.filetype.add({
+      --     extension = {
+      --       jsx = {
+      --         indent_func = require('nvim-treesitter.indent').get_indent,
+      --       },
+      --       tsx = {
+      --         indent_func = require('nvim-treesitter.indent').get_indent,
+      --       },
+      --     },
+      --   })
+      -- end
     end,
   },
   {
