@@ -3,6 +3,7 @@ return {
 	dependencies = {
 		"williamboman/mason.nvim",
 		"mfussenegger/nvim-dap",
+		"mfussenegger/nvim-jdtls",
 	},
 	config = function()
 		require("mason").setup()
@@ -33,7 +34,7 @@ return {
 							request = "launch",
 							name = "Launch file",
 							program = "${file}",
-							pythonPath = mason_path, -- Ensures debugged code uses the same Python
+							pythonPath = mason_path,
 							console = "integratedTerminal",
 							stopOnEntry = true,
 							justMyCode = false,

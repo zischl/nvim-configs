@@ -13,13 +13,13 @@ vim.keymap.set("n", "<C-q><C-q>", ":q!<CR>", { silent = true })
 vim.keymap.set("i", "<C-q><C-q>", "<Esc>:q!<CR>", { silent = true })
 
 -- Save the current buffer/file
-vim.keymap.set('n', '<Space>w', ':w<CR>', { desc = 'Save File' })
+vim.keymap.set("n", "<Space>w", ":w<CR>", { desc = "Save File" })
 
 -- Close the current window/buffer
-vim.keymap.set('n', '<Space>q', ':q<CR>', { desc = 'Quit Window' })
+vim.keymap.set("n", "<Space>q", ":q<CR>", { desc = "Quit Window" })
 
 -- Close all windows and exit Neovim
-vim.keymap.set('n', '<Space>Q', ':qa<CR>', { desc = 'Quit All' })
+vim.keymap.set("n", "<Space>Q", ":qa<CR>", { desc = "Quit All" })
 
 -- Buffer Controls
 vim.keymap.set("n", "<leader>bd", ":bd<CR>")
@@ -49,38 +49,25 @@ vim.api.nvim_set_keymap("n", "<C-/>", "gcc", { noremap = false })
 --nvim-tree Binds
 vim.api.nvim_set_keymap("n", "<leader>e", ":NvimTreeToggle<CR>", { silent = true, noremap = false })
 
---LSP
-vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float)
-vim.keymap.set("n", "]d", function()
-  vim.diagnostic.goto_next()
-  vim.diagnostic.open_float()
-end, { desc = "Next diagnostic" })
-
-vim.keymap.set("n", "[d", function()
-  vim.diagnostic.goto_prev()
-  vim.diagnostic.open_float()
-end, { desc = "Prev diagnostic" })
-
-
 local function ToggleRelativeNumbering()
-  if vim.wo.relativenumber then
-    vim.wo.relativenumber = true
-  else
-    vim.wo.relativenumber = false
-  end
+	if vim.wo.relativenumber then
+		vim.wo.relativenumber = true
+	else
+		vim.wo.relativenumber = false
+	end
 end
 
 vim.keymap.set("n", "<S>", function()
-  if vim.wo.relativenumber then
-    vim.wo.relativenumber = true
-  else
-    vim.wo.relativenumber = false
-  end
+	if vim.wo.relativenumber then
+		vim.wo.relativenumber = true
+	else
+		vim.wo.relativenumber = false
+	end
 end)
 
 --Refactor
 vim.keymap.set("n", "<leader>rr", function()
-  require("refactoring").select_refactor({
-    show_success_message = true,
-  })
+	require("refactoring").select_refactor({
+		show_success_message = true,
+	})
 end, { expr = false, silent = true, noremap = true })

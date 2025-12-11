@@ -29,7 +29,7 @@ return {
 		require("cmp").setup({
 
 			sources = cmp.config.sources({
-				{ name = "nvim_lsp", keyword_length = 2 },
+				{ name = "nvim_lsp" },
 				{ name = "luasnip" },
 				{ name = "cmdline" },
 				{ name = "path" },
@@ -38,6 +38,15 @@ return {
 
 			completion = {
 				completeopt = "menu,menuone,noselect",
+				get_trigger_characters = function(chars)
+					local new_chars = {}
+					for _, char in ipairs(chars) do
+						if char ~= " " then
+							table.insert(new_chars, char)
+						end
+					end
+					return new_chars
+				end,
 			},
 
 			snippet = {
