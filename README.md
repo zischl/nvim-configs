@@ -1,57 +1,77 @@
 A plug-and-play Neovim setup designed to work smoothly on Windows or Linux while providing all the essential modern features: autocompletion, snippets, treesitter, telescope, LSP, file explorer, formatting, debugging, UI improvements, and more.
 
 Some plugins in this configuration optionally compile small native modules (e.g., telescope-fzf-native, LuaSnip’s JS regex).  
-To avoid errors on Windows, follow the installation steps below.
+To avoid errors, follow the installation steps below.
 
-## Requirements (Windows)
+# Requirements 
 
 Install these tools before launching Neovim for the first time.  
 They ensure plugins can build their optional native components.
 
-### 1. Install make
-
-Required by several plugins during installation.
-
-### 2. Install Node.js (for LuaSnip)
-
-LuaSnip’s optional build for advanced regex inside snippet triggers needs npm for installation.
+##Linux
 
 ```
-winget install OpenJS.NodeJS
+# Essential build tools
+sudo apt update
+sudo apt install -y build-essential curl git unzip wget
+
+# For Tree-sitter C parsers
+sudo apt install -y gcc clang
+
+# Python and pip
+sudo apt install -y python3 python3-pip
+
+# Node.js and npm (needed for some LSPs and debug adapters)
+sudo apt install -y nodejs npm
+
+# Java (for nvim-jdtls)
+sudo apt install -y openjdk-21-jdk
+
+# ripgrep (optional, for telescope live grep search)
+sudo apt install -y ripgrep
 ```
 
 
-## 3. Install a C Compiler (choose ONE)
+##Windows
 
-### Option A — Zig (recommended)
+### 1) git, node.js + npm, python, jdk 21
 ```
-winget install Zig.Zig
-```
-
-### Option B — LLVM / Clang
-```
-winget install LLVM.LLVM
+winget install --id Git.Git -e
+winget install --id OpenJS.NodeJS -e
+winget install --id Python.Python.3 -e
+winget install Oracle.JDK.21
 ```
 
-### Option C — MSYS2 + GCC
-Only for users who specifically want advanced regex inside snippet triggers or native telescope for speed.
+### 2) Install Make / Build Tools
 
-1. Install MSYS2:
-   ```
-   winget install MSYS2.MSYS2
-   ```
+for an easier installation use chocolatey, to see if u already have it
+```
+choco -version
+```
+Install Chocolatey (Powershell - Run as administrator since choco install needs perms):
+```
+Set-ExecutionPolicy Bypass -Scope Process -Force; `
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; `
+iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+```
 
-2. Open the **MSYS2 MinGW64** terminal and run:
-   ```
-   pacman -S --needed base-devel mingw-w64-x86_64-toolchain
-   which make
-   ```
+Install build tools using choco:
+```
+choco install make -y
+choco install mingw -y
+```
 
-3. Add MSYS2 binaries to PATH:
-   ```
-   C:\msys64\usr\bin
-   C:\msys64\mingw64\bin
-   ```
+### 3) Optional but recommended
+```
+winget install --id BurntSushi.ripgrep.MSVC -e
+```
+
+### For java lsp and debugging features make sure u have jdk 21 installed and added to path
+Check with : 
+```
+java -version
+```
+
 
 ## Installing This Neovim Config
 
@@ -66,7 +86,7 @@ After installation:
 
 1. Start Neovim
 2. Lazy.nvim will install all plugins
-3. Build steps will automatically run only if `make` + a compiler are installed
+3. Optional build steps will automatically run only if `make` + a compiler are installed
 
 * If `make` or a compiler is not installed, plugin builds are skipped automatically — Neovim still works fine.
 * Zig is highly recommended on Windows for its compatibility with C build steps.
