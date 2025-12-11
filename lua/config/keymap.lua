@@ -49,6 +49,18 @@ vim.api.nvim_set_keymap("n", "<C-/>", "gcc", { noremap = false })
 --nvim-tree Binds
 vim.api.nvim_set_keymap("n", "<leader>e", ":NvimTreeToggle<CR>", { silent = true, noremap = false })
 
+--LSP
+vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float)
+vim.keymap.set("n", "]d", function()
+	vim.diagnostic.goto_next()
+	vim.diagnostic.open_float()
+end, { desc = "Next diagnostic" })
+
+vim.keymap.set("n", "[d", function()
+	vim.diagnostic.goto_prev()
+	vim.diagnostic.open_float()
+end, { desc = "Prev diagnostic" })
+
 local function ToggleRelativeNumbering()
 	if vim.wo.relativenumber then
 		vim.wo.relativenumber = true

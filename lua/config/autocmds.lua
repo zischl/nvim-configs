@@ -18,6 +18,13 @@ vim.api.nvim_create_autocmd("FileType", {
 	group = vim.api.nvim_create_augroup("JDTLS", { clear = true }),
 })
 
+vim.api.nvim_create_autocmd("BufWritePost", {
+	pattern = "*.java",
+	callback = function()
+		vim.lsp.codelens.refresh()
+	end,
+})
+
 vim.api.nvim_create_autocmd("VimEnter", {
 	group = vim.api.nvim_create_augroup("TelescopeStartup", { clear = true }),
 	callback = BootRecentWork,

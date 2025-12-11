@@ -9,6 +9,8 @@ local function get_jdtls_paths()
 
 	local extended_bundles = {
 		mason_path .. "packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar",
+		mason_path .. "packages/java-test/extension/server/*.jar",
+		mason_path .. "vscode-java-decompiler/server/*.jar",
 	}
 
 	return jdtls_path, launcher_jar, extended_bundles
@@ -30,6 +32,8 @@ local function on_attach(client, bufnr)
 
 	local jdap = require("jdtls.dap")
 	local dap = require("dap")
+	vim.lsp.codelens.refresh()
+	require("jdtls.setup").add_commands()
 	if dap then
 		jdap.setup_dap()
 		jdap.setup_dap_main_class_configs()
@@ -84,6 +88,18 @@ function M:setup()
 
 		init_options = {
 			bundles = extended_bundles,
+		},
+
+		settings = {
+			java = {
+				referencesCodeLens = {
+					enabled = true,
+				},
+				implementationsCodeLens = {
+					enabled = true,
+				},
+				signatureHelp = { enabled = true },
+			},
 		},
 
 		capabilities = require("cmp_nvim_lsp").default_capabilities(),

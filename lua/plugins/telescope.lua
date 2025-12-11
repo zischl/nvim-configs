@@ -1,3 +1,4 @@
+-- func to fix native build issues
 function TelescopeNativeBuildHelper()
 	local os_name = vim.loop.os_uname().sysname
 	if os_name == "Windows_NT" or "win" then
