@@ -2,16 +2,32 @@ local M = {}
 
 local function get_jdtls_paths()
 	local mason_path = vim.fn.stdpath("data") .. "/mason/"
-	local jdtls_path = string.gsub(mason_path, [[\]], "/") .. "packages/jdtls"
+  mason_path = string.gsub(mason_path, [[\]], "/")
+	
+  local jdtls_path = mason_path .. "packages/jdtls"
 
 	local launcher_jar =
 		vim.fn.glob(string.gsub(jdtls_path, [[\]], "/") .. "/plugins/org.eclipse.equinox.launcher_*.jar")
-
+  
+  
 	local extended_bundles = {
-		mason_path .. "packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar",
-		mason_path .. "packages/java-test/extension/server/*.jar",
-		mason_path .. "vscode-java-decompiler/server/*.jar",
 	}
+
+  vim.list_extend(
+    extended_bundles,
+    vim.split(vim.fn.glob(mason_path .. "/packages/java-debug-adapter/extension/server/*.jar", true), "\n")
+  )
+  
+  vim.list_extend(
+    extended_bundles,
+    vim.split(vim.fn.glob(mason_path .. "/packages/java-test/extension/server/*.jar", true), "\n")
+  )
+
+  vim.list_extend(
+    extended_bundles,
+    vim.split(vim.fn.glob(mason_path .. "/packages/vscode-java-decompiler/server/*.jar", true), "\n")
+  )
+  
 
 	return jdtls_path, launcher_jar, extended_bundles
 end
