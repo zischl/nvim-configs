@@ -55,6 +55,11 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; `
 iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 ```
 
+AND FOR SOME REASON U DECIDE TO INSTALL CHOCO WITHOUT ADMIN PERMS UNINSTALL CHOCO BY DELETING THIS FOLDER:
+```
+C:\ProgramData\chocolatey
+```
+
 Install build tools using choco:
 ```
 choco install make -y
