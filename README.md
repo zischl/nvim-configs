@@ -80,10 +80,11 @@ java -version
 
 ## Installing This Neovim Config
 
+First obv u need to install nvim...
 Clone this repository and move all the files into :
-
+(create the folder if it doesn't exist)
 ```
-%APPDATA%\Local\nvim\  (create the folder if it doesn't exist)
+%localappdata%\nvim\  
 ```
 
 
