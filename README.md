@@ -8,7 +8,7 @@ To avoid errors, follow the installation steps below.
 Install these tools before launching Neovim for the first time.  
 They ensure plugins can build their optional native components.
 
-##Linux
+## Linux
 
 ```
 # Essential build tools
@@ -32,10 +32,10 @@ sudo apt install -y ripgrep
 ```
 
 
-##Windows
+## Windows
 
 ### 1) git, node.js + npm, python, jdk 21
-```
+``` cmd
 winget install --id Git.Git -e
 winget install --id OpenJS.NodeJS -e
 winget install --id Python.Python.3 -e
