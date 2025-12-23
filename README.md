@@ -8,7 +8,7 @@ To avoid errors, follow the installation steps below.
 Install these tools before launching Neovim for the first time.  
 They ensure plugins can build their optional native components.
 
-##Linux
+## Linux
 
 ```
 # Essential build tools
@@ -32,10 +32,10 @@ sudo apt install -y ripgrep
 ```
 
 
-##Windows
+## Windows
 
 ### 1) git, node.js + npm, python, jdk 21
-```
+``` cmd
 winget install --id Git.Git -e
 winget install --id OpenJS.NodeJS -e
 winget install --id Python.Python.3 -e
@@ -53,6 +53,11 @@ Install Chocolatey (Powershell - Run as administrator since choco install needs 
 Set-ExecutionPolicy Bypass -Scope Process -Force; `
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; `
 iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+```
+
+AND FOR SOME REASON U DECIDE TO INSTALL CHOCO WITHOUT ADMIN PERMS UNINSTALL CHOCO BY DELETING THIS FOLDER:
+```
+C:\ProgramData\chocolatey
 ```
 
 Install build tools using choco:
@@ -75,10 +80,11 @@ java -version
 
 ## Installing This Neovim Config
 
+First obv u need to install nvim...
 Clone this repository and move all the files into :
-
+(create the folder if it doesn't exist)
 ```
-%APPDATA%\Local\nvim\  (create the folder if it doesn't exist)
+%localappdata%\nvim\  
 ```
 
 
