@@ -19,6 +19,7 @@ return {
           cpp = { "clang-format" },
           c = { "clang-format" },
           python = { "black", "isort" },
+          go = { "goimports" }
         },
 
         format_on_save = {
