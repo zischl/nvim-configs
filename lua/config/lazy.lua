@@ -24,8 +24,8 @@ require("config.autocmds")
 require("lazy").setup({
 
   spec = {
-    { import = "plugins" },
     { import = "themes" },
+    { import = "plugins" },
   },
   rocks = {
     enabled = false,
