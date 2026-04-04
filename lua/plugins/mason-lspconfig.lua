@@ -8,7 +8,19 @@ local on_attach = function(client, bufnr)
 end
 
 local opts = {
-  ensure_installed = { "lua_ls", "clangd", "pyright", "ts_ls" },
+  ensure_installed = {
+    "lua_ls", "clangd", "pyright", "ts_ls",
+
+    "gopls",
+
+    "tailwindcss",
+    "cssls",
+    "html",
+    "emmet_ls",
+
+    "prettier",
+    "stylua"
+  },
   automatic_installation = true,
   automatic_enable = {
     exclude = {
