@@ -1,8 +1,8 @@
 function GetLuaLib()
 	local os_name = vim.loop.os_uname().sysname
 
-	if os_name == "Windows_NT" or "win" then
-		local command = os_name:match("Windows") and "where nvim" or "which nvim"
+	if os_name:find("Windows") or os_name == "Windows_NT" then
+		local command = "where nvim"
 
 		local result = vim.fn.system(command)
 		result = result:gsub("nvim.exe", "")

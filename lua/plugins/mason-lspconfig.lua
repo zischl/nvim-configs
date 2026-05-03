@@ -24,65 +24,62 @@ local opts = {
 		"stylua",
 	},
 	automatic_installation = true,
-	automatic_enable = {
-		exclude = {
-			"jdtls",
-		},
+	automatic_enable = true,
+
+	handlers = {
+		["*"] = function(server_name)
+			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+			require("lspconfig")[server_name].setup({
+				capabilities = capabilities,
+				on_attach = on_attach,
+			})
+		end,
+
+		jdtls = function()
+			return true
+		end,
+
+		["efm"] = function()
+			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+			require("lspconfig").efm.setup({
+				capabilities = capabilities,
+				on_attach = on_attach,
+				settings = {
+					languages = {},
+				},
+			})
+		end,
+
+		["gopls"] = function()
+			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+			require("lspconfig").gopls.setup({
+				capabilities = capabilities,
+				on_attach = on_attach,
+				settings = {
+					gopls = {
+						analyses = {
+							unusedparams = true,
+						},
+						staticcheck = true,
+						gofumpt = true,
+					},
+				},
+			})
+		end,
 	},
 }
 
 return {
 	{
 		"mason-org/mason-lspconfig.nvim",
-		opts = opts,
 		dependencies = {
 			{ "mason-org/mason.nvim", opts = {} },
 			"neovim/nvim-lspconfig",
+			"hrsh7th/cmp-nvim-lsp",
 		},
-
-		handlers = {
-			["*"] = function(server_name)
-				local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-				require("lspconfig")[server_name].setup({
-					capabilities = capabilities,
-					on_attach = on_attach,
-				})
-			end,
-
-			jdtls = function()
-				return true
-			end,
-
-			["efm"] = function()
-				local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-				require("lspconfig").efm.setup({
-					capabilities = capabilities,
-					on_attach = on_attach,
-					settings = {
-						languages = {},
-					},
-				})
-			end,
-
-			["gopls"] = function()
-				local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-				require("lspconfig").gopls.setup({
-					capabilities = capabilities,
-					on_attach = on_attach,
-					settings = {
-						gopls = {
-							analyses = {
-								unusedparams = true,
-							},
-							staticcheck = true,
-							gofumpt = true,
-						},
-					},
-				})
-			end,
-		},
+		opts = opts,
 	},
 }
