@@ -56,6 +56,7 @@ return {
 		require("mason-nvim-dap").setup({
 			automatic_installation = true,
 			ensure_installed = {
+				"cpptools",
 				"debugpy",
 				"codelldb",
 				"js-debug-adapter",
@@ -66,14 +67,16 @@ return {
 					require("mason-nvim-dap").default_setup(config)
 				end,
 
-				debugpy = function(config)
-					require("dap").adapters.python = {
+				python = function(config)
+					local dap = require("dap")
+
+					dap.adapters.python = {
 						type = "executable",
 						command = get_debugpy_python(),
 						args = { "-m", "debugpy.adapter" },
 					}
 
-					require("dap").configurations.python = {
+					dap.configurations.python = {
 						{
 							type = "python",
 							request = "launch",
@@ -83,8 +86,6 @@ return {
 							console = "integratedTerminal",
 						},
 					}
-
-					require("mason-nvim-dap").default_setup(config)
 				end,
 			},
 		})
