@@ -36,14 +36,3 @@ vim.api.nvim_create_autocmd("VimLeavePre", {
 		local cwd = vim.fn.getcwd()
 	end,
 })
-
-vim.api.nvim_create_autocmd("LspAttach", {
-	group = vim.api.nvim_create_augroup("CMakeAutoGenerate", { clear = true }),
-	callback = function(args)
-		local cmake = require("cmake-tools")
-		if cmake.is_cmake_project() and vim.fn.filereadable("build/compile_commands.json") == 0 then
-			vim.notify("CMake project detected. Generating build files...", vim.log.levels.INFO)
-			vim.cmd("CMakeGenerate")
-		end
-	end,
-})
