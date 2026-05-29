@@ -71,7 +71,6 @@ local opts = {
 		end,
 
 		["clangd"] = function()
-			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 			require("lspconfig").clangd.setup({
 				on_new_config = function(new_config, _)
 					local status, cmake = pcall(require, "cmake-tools")
@@ -80,6 +79,35 @@ local opts = {
 					end
 				end,
 			})
+		end,
+
+		["neocmake"] = function()
+			local configs = require("lspconfig.configs")
+			local nvim_lsp = require("lspconfig")
+			if not configs.neocmake then
+				configs.neocmake = {
+					default_config = {
+						cmd = { "neocmakelsp", "stdio" },
+						filetypes = { "cmake" },
+						root_dir = function(fname)
+							return nvim_lsp.util.find_git_ancestor(fname)
+						end,
+						single_file_support = true,
+					},
+				}
+				nvim_lsp.neocmake.setup({
+					on_attach = on_attach,
+					init_options = {
+						format = {
+							enable = true,
+						},
+						lint = {
+							enable = true,
+						},
+						scan_cmake_in_package = true,
+					},
+				})
+			end
 		end,
 	},
 }

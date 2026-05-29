@@ -1,6 +1,14 @@
 -- Select all
 vim.keymap.set("n", "<C-a>", "gg<S-v>G")
 
+-- inc - rename
+vim.keymap.set("n", "<leader>rn", function()
+	return ":IncRename " .. vim.fn.expand("<cword>")
+end, { expr = true })
+
+-- Gitsigns
+vim.keymap.set("n", "<leader>hp", ":Gitsigns preview_hunk_inline<CR>", { desc = "Preview hunk inline" })
+
 --general
 vim.keymap.set("i", "<C-j>", "<Esc>")
 
@@ -60,6 +68,8 @@ vim.keymap.set("n", "[d", function()
 	vim.diagnostic.goto_prev()
 	vim.diagnostic.open_float()
 end, { desc = "Prev diagnostic" })
+
+vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Actions" })
 
 local function ToggleRelativeNumbering()
 	if vim.wo.relativenumber then

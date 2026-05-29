@@ -29,11 +29,11 @@ return {
 		require("cmp").setup({
 
 			sources = cmp.config.sources({
+				{ name = "buffer" },
 				{ name = "nvim_lsp" },
 				{ name = "luasnip" },
-				{ name = "cmdline" },
 				{ name = "path" },
-				{ name = "buffer" },
+				{ name = "cmdline" },
 			}),
 
 			completion = {
@@ -73,6 +73,24 @@ return {
 				end, { "i", "s" }),
 			}),
 		})
+
+		cmp.setup.cmdline(":", {
+			mapping = cmp.mapping.preset.cmdline({
+				["<Tab>"] = {
+					c = function()
+						if cmp.visible() then
+							cmp.confirm({ select = true })
+						end
+					end,
+				},
+			}),
+			sources = cmp.config.sources({
+				{ name = "path" },
+			}, {
+				{ name = "cmdline" },
+			}),
+			matching = { disallow_symbol_nonprefix_matching = false },
+		})
 	end,
 
 	dependencies = {
@@ -98,6 +116,6 @@ return {
 		},
 	},
 
-	event = "InsertEnter",
+	event = { "InsertEnter", "CmdlineEnter" },
 	priority = 1000,
 }
