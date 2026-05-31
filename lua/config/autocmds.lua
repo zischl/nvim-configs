@@ -36,3 +36,9 @@ vim.api.nvim_create_autocmd("VimLeavePre", {
 		local cwd = vim.fn.getcwd()
 	end,
 })
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+	callback = function()
+		vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#a371f7", bold = false })
+	end,
+})

@@ -36,3 +36,6 @@ opt.mouse:append("a")
 opt.clipboard:append("unnamedplus")
 opt.modifiable = true
 opt.encoding = "UTF-8"
+
+vim.opt.cursorline = true
+vim.opt.cursorlineopt = "number"

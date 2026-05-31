@@ -9,7 +9,6 @@ return {
 			additional_vim_regex_highlighting = { "cmake" },
 			disable = { "cmake" },
 		},
-		indent = { enable = true },
 		ensure_installed = {
 			"c",
 			"cpp",
