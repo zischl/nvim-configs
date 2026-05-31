@@ -48,8 +48,8 @@ vim.keymap.set("n", "<C-w><up>", "<C-w>+")
 vim.keymap.set("n", "<C-w><down>", "<C-w>-")
 
 -- Increment/decrement
-vim.keymap.set("n", "+", "<C-x>")
-vim.keymap.set("n", "-", "<C-a>")
+vim.keymap.set("n", "+", "<C-a>")
+vim.keymap.set("n", "-", "<C-x>")
 
 --Comment Bind
 vim.api.nvim_set_keymap("n", "<C-/>", "gcc", { noremap = false })
@@ -68,7 +68,9 @@ vim.keymap.set("n", "[d", function()
 	vim.diagnostic.goto_prev()
 	vim.diagnostic.open_float()
 end, { desc = "Prev diagnostic" })
-
+vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "LSP Definition" })
+vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "LSP Declaration" })
+vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "LSP Implementation" })
 vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Actions" })
 
 local function ToggleRelativeNumbering()

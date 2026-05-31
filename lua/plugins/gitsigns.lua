@@ -60,7 +60,7 @@ return {
 				map("n", "<leader>gb", function()
 					gitsigns.blame_line({ full = true })
 				end, { desc = "Full Blame" })
-				map("n", "<leader>gd", gitsigns.diffthis, { desc = "Diff This" })
+				map("n", "<leader>gdd", gitsigns.diffthis, { desc = "Diff This" })
 
 				-- Text object
 				map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Select Git Hunk" })
