@@ -2,37 +2,36 @@ local M = {}
 
 local function get_jdtls_paths()
 	local mason_path = vim.fn.stdpath("data") .. "/mason/"
-  mason_path = string.gsub(mason_path, [[\]], "/")
-	
-  local jdtls_path = mason_path .. "packages/jdtls"
+	mason_path = string.gsub(mason_path, [[\]], "/")
+
+	local jdtls_path = mason_path .. "packages/jdtls"
 
 	local launcher_jar =
 		vim.fn.glob(string.gsub(jdtls_path, [[\]], "/") .. "/plugins/org.eclipse.equinox.launcher_*.jar")
-  
-  
-	local extended_bundles = {
-	}
 
-  vim.list_extend(
-    extended_bundles,
-    vim.split(vim.fn.glob(mason_path .. "/packages/java-debug-adapter/extension/server/*.jar", true), "\n")
-  )
-  
-  vim.list_extend(
-    extended_bundles,
-    vim.split(vim.fn.glob(mason_path .. "/packages/java-test/extension/server/*.jar", true), "\n")
-  )
+	local extended_bundles = {}
 
-  vim.list_extend(
-    extended_bundles,
-    vim.split(vim.fn.glob(mason_path .. "/packages/vscode-java-decompiler/server/*.jar", true), "\n")
-  )
-  
+	vim.list_extend(
+		extended_bundles,
+		vim.split(vim.fn.glob(mason_path .. "packages/java-debug-adapter/extension/server/*.jar", true), "\n")
+	)
+
+	vim.list_extend(
+		extended_bundles,
+		vim.split(vim.fn.glob(mason_path .. "packages/java-test/extension/server/*.jar", true), "\n")
+	)
+
+	vim.list_extend(
+		extended_bundles,
+		vim.split(vim.fn.glob(mason_path .. "packages/vscode-java-decompiler/server/*.jar", true), "\n")
+	)
 
 	return jdtls_path, launcher_jar, extended_bundles
 end
 
 local function on_attach(client, bufnr)
+	local opts = { noremap = true, silent = true, buffer = bufnr }
+
 	vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 	vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
 	vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
@@ -46,11 +45,13 @@ local function on_attach(client, bufnr)
 	vim.keymap.set("n", "<leader>ec", require("jdtls").extract_constant, opts)
 	vim.keymap.set("n", "<leader>em", require("jdtls").extract_method, opts)
 
-	local jdap = require("jdtls.dap")
-	local dap = require("dap")
+	local dap_status, dap = pcall(require, "dap")
+	local jdap_status, jdap = pcall(require, "jdtls.dap")
+
 	vim.lsp.codelens.refresh()
 	require("jdtls.setup").add_commands()
-	if dap then
+
+	if dap_status and jdap_status then
 		jdap.setup_dap()
 		jdap.setup_dap_main_class_configs()
 	end
@@ -60,11 +61,8 @@ function M:setup()
 	local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
 	local os_name = vim.loop.os_uname().sysname
 	local jdtls_path, launcher_jar, extended_bundles = get_jdtls_paths()
-	local workspace_dir = vim.fn.stdpath("data")
-		.. package.config:sub(1, 1)
-		.. "jdtls-workspace"
-		.. package.config:sub(1, 1)
-		.. project_name
+	local base_data = string.gsub(vim.fn.stdpath("data"), [[\]], "/")
+	local workspace_dir = base_data .. "/jdtls-workspace/" .. project_name
 
 	local config = {
 		cmd = {
@@ -118,7 +116,7 @@ function M:setup()
 			},
 		},
 
-		capabilities = require("cmp_nvim_lsp").default_capabilities(),
+		capabilities = require("blink.cmp").get_lsp_capabilities(),
 		on_attach = on_attach,
 	}
 

@@ -28,7 +28,7 @@ local opts = {
 
 	handlers = {
 		["*"] = function(server_name)
-			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 			require("lspconfig")[server_name].setup({
 				capabilities = capabilities,
@@ -41,7 +41,7 @@ local opts = {
 		end,
 
 		["efm"] = function()
-			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 			require("lspconfig").efm.setup({
 				capabilities = capabilities,
@@ -53,7 +53,7 @@ local opts = {
 		end,
 
 		["gopls"] = function()
-			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 			require("lspconfig").gopls.setup({
 				capabilities = capabilities,
@@ -71,7 +71,13 @@ local opts = {
 		end,
 
 		["clangd"] = function()
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+			capabilities.offsetEncoding = { "utf-16" }
+
 			require("lspconfig").clangd.setup({
+				capabilities = capabilities,
+				on_attach = on_attach,
 				on_new_config = function(new_config, _)
 					local status, cmake = pcall(require, "cmake-tools")
 					if status then
@@ -95,15 +101,14 @@ local opts = {
 						single_file_support = true,
 					},
 				}
+
+				local capabilities = require("blink.cmp").get_lsp_capabilities()
 				nvim_lsp.neocmake.setup({
+					capabilities = capabilities,
 					on_attach = on_attach,
 					init_options = {
-						format = {
-							enable = true,
-						},
-						lint = {
-							enable = true,
-						},
+						format = { enable = true },
+						lint = { enable = true },
 						scan_cmake_in_package = true,
 					},
 				})
@@ -118,7 +123,7 @@ return {
 		dependencies = {
 			{ "mason-org/mason.nvim", opts = {} },
 			"neovim/nvim-lspconfig",
-			"hrsh7th/cmp-nvim-lsp",
+			"saghen/blink.cmp",
 		},
 		opts = opts,
 	},

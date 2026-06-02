@@ -39,3 +39,15 @@ opt.encoding = "UTF-8"
 
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = "number"
+
+vim.diagnostic.config({
+	virtual_text = {
+		spacing = 4,
+		source = "if_many",
+		prefix = "■ ",
+		severity_sort = true,
+	},
+	signs = { Error = "", Warn = "", Info = "", Hint = "  " },
+	underline = true,
+	update_in_insert = false,
+})
