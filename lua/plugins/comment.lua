@@ -1,38 +1,36 @@
 local function GetPreHook(ctx)
-  local ft = vim.bo.filetype
+	local ft = vim.bo.filetype
 
-  if ft ~= "javascriptreact" and ft ~= "typescriptreact" then
-    return nil
-  end
+	if ft ~= "javascriptreact" and ft ~= "typescriptreact" then
+		return nil
+	end
 
-  local pre = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook()
-  local cs = pre(ctx)
+	local ts_status, ts = pcall(require, "ts_context_commentstring.integrations.comment_nvim")
+	if ts_status then
+		return nil
+	end
 
-
-  if cs then
-    return cs
-  end
-
-  return ctx
+	return ts.create_pre_hook()(ctx)
 end
-
-
 
 return {
 
-  'numToStr/Comment.nvim',
-  opts = {
-    ---Function to call before (un)comment
-    pre_hook = GetPreHook
-  },
-  lazy = false,
+	"numToStr/Comment.nvim",
+	dependencies = {
+		"JoosepAlviste/nvim-ts-context-commentstring",
+		opts = {
+			enable_autocmd = false,
+		},
+		lazy = true,
+	},
 
-  dependencies = {
-    'JoosepAlviste/nvim-ts-context-commentstring',
-    opts = {
-      enable_autocmd = false,
-    },
-    lazy = true,
-    ft = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
-  },
+	opts = {
+		pre_hook = GetPreHook,
+
+		mappings = {
+			basic = true,
+			extra = true,
+		},
+	},
+	lazy = false,
 }

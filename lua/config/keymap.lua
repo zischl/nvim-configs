@@ -90,8 +90,8 @@ vim.keymap.set("n", "<S>", function()
 end)
 
 --Refactor
-vim.keymap.set("n", "<leader>rr", function()
+vim.keymap.set({ "n", "x" }, "<leader>rr", function()
 	require("refactoring").select_refactor({
 		show_success_message = true,
 	})
-end, { expr = false, silent = true, noremap = true })
+end, { expr = false, silent = true, noremap = true, desc = "Refactor Menu" })
