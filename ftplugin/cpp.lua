@@ -6,3 +6,7 @@ vim.keymap.set("n", "<F7>", ":CMakeBuild<CR>")
 vim.keymap.set("n", "<leader>oo", function()
 	require("buildsentry").open()
 end, { desc = "Open BuildSentry", buffer = true })
+
+vim.keymap.set("n", "<leader>gh", function()
+	vim.cmd("LspClangdSwitchSourceHeader")
+end, { desc = "Go to Header/Source" })

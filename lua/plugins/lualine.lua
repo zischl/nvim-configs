@@ -16,12 +16,24 @@ return {
 					lualine_z = { "location" },
 				},
 				tabline = {
-					lualine_a = { "buffers" },
+					lualine_a = {
+						{
+							"tabs",
+							mode = 2,
+
+							max_length = vim.o.columns,
+							use_mode_colors = false,
+
+							fmt = function(name, context)
+								return vim.fn.fnamemodify(name, ":t")
+							end,
+						},
+					},
 					lualine_b = {},
 					lualine_c = {},
 					lualine_x = {},
 					lualine_y = {},
-					lualine_z = { "tabs" },
+					lualine_z = {},
 				},
 			})
 		end,
