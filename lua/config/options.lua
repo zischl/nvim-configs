@@ -15,7 +15,7 @@ opt.smartcase = true
 opt.number = true
 opt.relativenumber = true
 opt.termguicolors = true
-opt.colorcolumn = "100"
+opt.colorcolumn = "110"
 opt.signcolumn = "yes"
 opt.cmdheight = 1
 opt.scrolloff = 8
@@ -50,4 +50,14 @@ vim.diagnostic.config({
 	signs = { Error = "", Warn = "", Info = "", Hint = "  " },
 	underline = true,
 	update_in_insert = false,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "c", "cpp" },
+	callback = function()
+		vim.opt_local.cindent = true
+		vim.opt_local.cinoptions = "l1,g0,t0,p0,:0,=0"
+		vim.opt_local.smartindent = false
+		vim.opt_local.autoindent = true
+	end,
 })
