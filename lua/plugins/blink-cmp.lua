@@ -59,7 +59,17 @@ return {
 			["<Up>"] = { "select_prev", "fallback" },
 			["<C-b>"] = { "scroll_documentation_up", "fallback" },
 			["<C-f>"] = { "scroll_documentation_down", "fallback" },
-			["<C-Space>"] = { "show", "toggle_documentation", "fallback" },
+			["<C-Space>"] = {
+				function(cmp)
+					if cmp.is_documentation_visible() then
+						cmp.hide_documentation()
+					else
+						cmp.show_documentation()
+					end
+				end,
+				"show",
+				"fallback",
+			},
 			["<C-e>"] = { "hide", "fallback" },
 			["<CR>"] = { "accept", "fallback" },
 
