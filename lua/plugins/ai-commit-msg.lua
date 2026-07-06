@@ -11,7 +11,7 @@ return {
 				model = "gemini-2.5-flash-lite",
 				temperature = 0.5,
 
-				system_prompt = [[Generate a commit message keep a dash+space prefix]],
+				system_prompt = [[Generate a consise compact yet detailed commit message keep a dash+space prefix]],
 			},
 		},
 	},
