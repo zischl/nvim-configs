@@ -23,6 +23,10 @@ return {
 			"javascript",
 			"typescript",
 			"tsx",
+			"c_sharp",
+			"razor",
+			"xml",
+			"proto",
 		},
 	},
 	config = function(_, opts)

@@ -8,6 +8,11 @@ local on_attach = function(client, bufnr)
 end
 
 local opts = {
+
+	registries = {
+		"github:mason-org/mason-registry",
+		"github:Crashdummyy/mason-registry",
+	},
 	ensure_installed = {
 		"lua_ls",
 		"clangd",
@@ -113,6 +118,10 @@ local opts = {
 					},
 				})
 			end
+		end,
+
+		roslyn = function()
+			return true
 		end,
 	},
 }
