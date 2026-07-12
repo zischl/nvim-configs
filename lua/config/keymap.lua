@@ -6,8 +6,6 @@ vim.keymap.set("n", "<leader>rn", function()
 	return ":IncRename " .. vim.fn.expand("<cword>")
 end, { expr = true })
 
--- Gitsigns
-vim.keymap.set("n", "<leader>hp", ":Gitsigns preview_hunk_inline<CR>", { desc = "Preview hunk inline" })
 
 --general
 vim.keymap.set("i", "<C-j>", "<Esc>")
@@ -73,21 +71,6 @@ vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "LSP Declaration" })
 vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "LSP Implementation" })
 vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Actions" })
 
-local function ToggleRelativeNumbering()
-	if vim.wo.relativenumber then
-		vim.wo.relativenumber = true
-	else
-		vim.wo.relativenumber = false
-	end
-end
-
-vim.keymap.set("n", "<S>", function()
-	if vim.wo.relativenumber then
-		vim.wo.relativenumber = true
-	else
-		vim.wo.relativenumber = false
-	end
-end)
 
 --Refactor
 vim.keymap.set({ "n", "x" }, "<leader>rr", function()
@@ -95,3 +78,7 @@ vim.keymap.set({ "n", "x" }, "<leader>rr", function()
 		show_success_message = true,
 	})
 end, { expr = false, silent = true, noremap = true, desc = "Refactor Menu" })
+
+--CodeCompanion
+vim.keymap.set({ "n", "v" }, "<leader>cc", "<cmd>CodeCompanionActions<cr>", { desc = "CodeCompanion Actions" })
+vim.keymap.set({ "n", "v" }, "<leader>ct", "<cmd>CodeCompanionChat Toggle<cr>", { desc = "Toggle AI Chat" })

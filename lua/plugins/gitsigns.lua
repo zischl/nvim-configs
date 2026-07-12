@@ -47,20 +47,20 @@ return {
 					return "<Ignore>"
 				end, { expr = true, desc = "Prev Git Hunk" })
 
-				map("n", "<leader>gs", gitsigns.stage_hunk, { desc = "Stage Hunk" })
-				map("n", "<leader>gr", gitsigns.reset_hunk, { desc = "Reset Hunk" })
-				map("v", "<leader>gs", function()
+				map("n", "<leader>hs", gitsigns.stage_hunk, { desc = "Stage Hunk" })
+				map("n", "<leader>hr", gitsigns.reset_hunk, { desc = "Reset Hunk" })
+				map("v", "<leader>hs", function()
 					gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
 				end, { desc = "Stage Selected" })
-				map("v", "<leader>gr", function()
+				map("v", "<leader>hr", function()
 					gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
 				end, { desc = "Reset Selected" })
-				map("n", "<leader>gu", gitsigns.undo_stage_hunk, { desc = "Undo Stage Hunk" })
-				map("n", "<leader>gp", gitsigns.preview_hunk, { desc = "Preview Hunk" })
-				map("n", "<leader>gb", function()
+				map("n", "<leader>hu", gitsigns.undo_stage_hunk, { desc = "Undo Stage Hunk" })
+				map("n", "<leader>hp", gitsigns.preview_hunk, { desc = "Preview Hunk" })
+				map("n", "<leader>hb", function()
 					gitsigns.blame_line({ full = true })
 				end, { desc = "Full Blame" })
-				map("n", "<leader>gdd", gitsigns.diffthis, { desc = "Diff This" })
+				map("n", "<leader>hd", gitsigns.diffthis, { desc = "Diff This" })
 
 				-- Text object
 				map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Select Git Hunk" })

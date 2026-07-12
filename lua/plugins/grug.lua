@@ -6,7 +6,7 @@ return {
 	},
 	keys = {
 		{
-			"<leader>gs",
+			"<leader>sr",
 			function()
 				require("grug-far").open({ transient = true })
 			end,

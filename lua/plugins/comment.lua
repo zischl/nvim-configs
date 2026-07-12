@@ -6,7 +6,7 @@ local function GetPreHook(ctx)
 	end
 
 	local ts_status, ts = pcall(require, "ts_context_commentstring.integrations.comment_nvim")
-	if ts_status then
+	if not ts_status then
 		return nil
 	end
 

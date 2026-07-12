@@ -27,6 +27,7 @@ return {
 			"razor",
 			"xml",
 			"proto",
+			"yaml",
 		},
 	},
 	config = function(_, opts)

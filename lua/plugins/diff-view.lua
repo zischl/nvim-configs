@@ -84,7 +84,7 @@ return {
 						if not choice then
 							return
 						end
-						local idx = tonumber(choice:match("^(%d+)%"))
+						local idx = tonumber(choice:match("^(%d+)%."))
 						if actions[idx] then
 							vim.cmd(actions[idx].cmd)
 						end
