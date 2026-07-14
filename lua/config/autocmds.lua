@@ -42,3 +42,13 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 		vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#a371f7", bold = false })
 	end,
 })
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "gitcommit",
+	callback = function(args)
+		vim.keymap.set("n", "<leader>gc", function()
+			require("config.git_ai").generate_commit_msg()
+		end, { buffer = args.buf, desc = "Generate AI Commit Msg (Custom Script)" })
+	end,
+	group = vim.api.nvim_create_augroup("GitAI", { clear = true }),
+})
