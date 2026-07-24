@@ -1,8 +1,23 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
-	branch = "master",
+	branch = "main",
 	build = ":TSUpdate",
 	lazy = false,
+	init = function()
+		if
+			vim.fn.executable("tree-sitter") == 0
+			and vim.fn.executable("gcc") == 0
+			and vim.fn.executable("clang") == 0
+			and vim.fn.executable("zig") == 0
+		then
+			vim.schedule(function()
+				vim.notify(
+					"nvim-treesitter: 'tree-sitter' CLI or C compiler not found on PATH. Run 'npm install -g tree-sitter-cli' to compile parsers.",
+					vim.log.levels.WARN
+				)
+			end)
+		end
+	end,
 	opts = {
 		highlight = {
 			enable = true,
