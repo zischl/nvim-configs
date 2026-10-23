@@ -13,7 +13,7 @@ return {
 			request = "launch",
 			stopOnEntry = false,
 			runInTerminal = true,
-			console = "integratedTerminal",
+			console = "externalTerminal",
 		},
 	},
 }

@@ -18,15 +18,13 @@ local opts = {
 		"clangd",
 		"pyright",
 		"ts_ls",
-
 		"gopls",
-
 		"tailwindcss",
 		"cssls",
 		"html",
 		"emmet_ls",
-
-		"stylua",
+		"eslint",
+		"jsonls",
 	},
 	automatic_installation = true,
 	automatic_enable = true,
@@ -118,6 +116,204 @@ local opts = {
 					},
 				})
 			end
+		end,
+
+		["ts_ls"] = function()
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+			require("lspconfig").ts_ls.setup({
+				capabilities = capabilities,
+				on_attach = function(client, bufnr)
+					on_attach(client, bufnr)
+
+					vim.api.nvim_buf_create_user_command(bufnr, "OrganizeImports", function()
+						vim.lsp.buf.execute_command({
+							command = "_typescript.organizeImports",
+							arguments = { vim.api.nvim_buf_get_name(bufnr) },
+						})
+					end, { desc = "Organize Imports" })
+
+					vim.keymap.set(
+						"n",
+						"<leader>co",
+						"<cmd>OrganizeImports<CR>",
+						{ buffer = bufnr, desc = "Organize Imports" }
+					)
+				end,
+				root_dir = require("lspconfig.util").root_pattern(
+					"tsconfig.json",
+					"jsconfig.json",
+					"package.json",
+					".git"
+				),
+				single_file_support = false,
+				settings = {
+					typescript = {
+						inlayHints = {
+							includeInlayParameterNameHints = "all",
+							includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+							includeInlayFunctionParameterTypeHints = true,
+							includeInlayVariableTypeHints = false,
+							includeInlayPropertyDeclarationTypeHints = true,
+							includeInlayFunctionLikeReturnTypeHints = true,
+							includeInlayEnumMemberValueHints = true,
+						},
+						suggest = {
+							completeFunctionCalls = true,
+						},
+					},
+					javascript = {
+						inlayHints = {
+							includeInlayParameterNameHints = "all",
+							includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+							includeInlayFunctionParameterTypeHints = true,
+							includeInlayVariableTypeHints = false,
+							includeInlayPropertyDeclarationTypeHints = true,
+							includeInlayFunctionLikeReturnTypeHints = true,
+							includeInlayEnumMemberValueHints = true,
+						},
+						suggest = {
+							completeFunctionCalls = true,
+						},
+					},
+				},
+			})
+		end,
+
+		["tailwindcss"] = function()
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+			require("lspconfig").tailwindcss.setup({
+				capabilities = capabilities,
+				on_attach = on_attach,
+				root_dir = require("lspconfig.util").root_pattern(
+					"tailwind.config.js",
+					"tailwind.config.cjs",
+					"tailwind.config.mjs",
+					"tailwind.config.ts",
+					"postcss.config.js",
+					"postcss.config.cjs",
+					"postcss.config.mjs",
+					"postcss.config.ts",
+					"package.json",
+					"node_modules",
+					".git"
+				),
+				filetypes = {
+					"html",
+					"css",
+					"scss",
+					"javascript",
+					"javascriptreact",
+					"typescript",
+					"typescriptreact",
+					"vue",
+					"svelte",
+				},
+				settings = {
+					tailwindCSS = {
+						classAttributes = { "class", "className", "class:list", "classList", "ngClass" },
+						includeLanguages = {
+							typescript = "javascript",
+							typescriptreact = "javascript",
+							javascript = "javascript",
+							javascriptreact = "javascript",
+						},
+						lint = {
+							cssConflict = "warning",
+							invalidApply = "error",
+							invalidConfigPath = "error",
+							invalidScreen = "error",
+							invalidTailwindDirective = "error",
+							invalidVariant = "error",
+							recommendedVariantOrder = "warning",
+						},
+						experimental = {
+							classRegex = {
+								{ "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
+								{ "cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+								{ "clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+								{ "cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+								{ "twMerge\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+								{ "tv\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+								{ "tw\\`([^\\`]*)\\`", "([^\\`]*)" },
+							},
+						},
+					},
+				},
+			})
+		end,
+
+		["cssls"] = function()
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+			require("lspconfig").cssls.setup({
+				capabilities = capabilities,
+				on_attach = on_attach,
+				settings = {
+					css = { validate = true, lint = { unknownAtRules = "ignore" } },
+					scss = { validate = true, lint = { unknownAtRules = "ignore" } },
+					less = { validate = true, lint = { unknownAtRules = "ignore" } },
+				},
+			})
+		end,
+
+		["emmet_ls"] = function()
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+			require("lspconfig").emmet_ls.setup({
+				capabilities = capabilities,
+				on_attach = on_attach,
+				filetypes = {
+					"html",
+					"typescriptreact",
+					"javascriptreact",
+					"css",
+					"sass",
+					"scss",
+					"less",
+				},
+				init_options = {
+					html = {
+						options = {
+							["bem.enabled"] = true,
+						},
+					},
+				},
+			})
+		end,
+
+		["eslint"] = function()
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+			require("lspconfig").eslint.setup({
+				capabilities = capabilities,
+				on_attach = function(client, bufnr)
+					on_attach(client, bufnr)
+					vim.api.nvim_create_autocmd("BufWritePre", {
+						buffer = bufnr,
+						command = "silent! EslintFixAll",
+					})
+				end,
+				settings = {
+					workingDirectories = { mode = "auto" },
+					format = false,
+				},
+			})
+		end,
+
+		["jsonls"] = function()
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+			require("lspconfig").jsonls.setup({
+				capabilities = capabilities,
+				on_attach = on_attach,
+				settings = {
+					json = {
+						validate = { enable = true },
+					},
+				},
+			})
 		end,
 
 		roslyn = function()

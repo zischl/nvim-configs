@@ -13,4 +13,20 @@ return {
 			},
 		},
 	},
+	{
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		dependencies = { "mason-org/mason.nvim" },
+		event = "VeryLazy",
+		opts = {
+			ensure_installed = {
+				"prettier",
+				"prettierd",
+				"eslint_d",
+				"stylua",
+				"tree-sitter-cli",
+			},
+			auto_update = false,
+			run_on_start = true,
+		},
+	},
 }
