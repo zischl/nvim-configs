@@ -24,6 +24,35 @@ return {
 						{ "source_name" },
 					},
 					components = {
+						kind_icon = {
+							ellipsis = false,
+							text = function(ctx)
+								local icon = ctx.kind_icon
+								if ctx.item.source_name == "LSP" then
+									local ok, highlight_colors = pcall(require, "nvim-highlight-colors")
+									if ok then
+										local color_item = highlight_colors.format(ctx.item.documentation, { kind = ctx.kind })
+										if color_item and color_item.abbr and color_item.abbr ~= "" then
+											icon = color_item.abbr
+										end
+									end
+								end
+								return icon
+							end,
+							highlight = function(ctx)
+								local hl = ctx.kind_hl
+								if ctx.item.source_name == "LSP" then
+									local ok, highlight_colors = pcall(require, "nvim-highlight-colors")
+									if ok then
+										local color_item = highlight_colors.format(ctx.item.documentation, { kind = ctx.kind })
+										if color_item and color_item.abbr_hl_group then
+											hl = color_item.abbr_hl_group
+										end
+									end
+								end
+								return hl
+							end,
+						},
 						label = {
 							text = function(ctx)
 								return ctx.label .. ctx.label_detail
