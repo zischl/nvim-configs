@@ -42,3 +42,25 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 		vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#a371f7", bold = false })
 	end,
 })
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = {
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"html",
+		"css",
+		"scss",
+		"json",
+		"jsonc",
+		"yaml",
+	},
+	callback = function()
+		vim.opt_local.tabstop = 2
+		vim.opt_local.shiftwidth = 2
+		vim.opt_local.softtabstop = 2
+		vim.opt_local.expandtab = true
+	end,
+	group = vim.api.nvim_create_augroup("WebIndent", { clear = true }),
+})

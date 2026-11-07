@@ -6,7 +6,6 @@ vim.keymap.set("n", "<leader>rn", function()
 	return ":IncRename " .. vim.fn.expand("<cword>")
 end, { expr = true })
 
-
 --general
 vim.keymap.set("i", "<C-j>", "<Esc>")
 
@@ -69,8 +68,11 @@ end, { desc = "Prev diagnostic" })
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "LSP Definition" })
 vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "LSP Declaration" })
 vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "LSP Implementation" })
+vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "LSP References" })
 vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Actions" })
-
+vim.keymap.set("n", "<leader>th", function()
+	vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+end, { desc = "Toggle Inlay Hints" })
 
 --Refactor
 vim.keymap.set({ "n", "x" }, "<leader>rr", function()
