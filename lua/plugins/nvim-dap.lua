@@ -11,6 +11,10 @@ return {
 
 		local is_windows = vim.fn.has("win32") == 1
 
+		if is_windows then
+			vim.env.LLDB_USE_NATIVE_PDB_READER = "1"
+		end
+
 		local function get_project_python()
 			local cwd = vim.fn.getcwd()
 
@@ -67,6 +71,24 @@ return {
 					require("mason-nvim-dap").default_setup(config)
 				end,
 
+				codelldb = function(config)
+					require("mason-nvim-dap").default_setup(config)
+					local dap = require("dap")
+					local base = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension/adapter/codelldb.exe"
+					if is_windows then
+						base = base:gsub("/", "\\")
+					end
+					dap.adapters.codelldb = {
+						type = "server",
+						port = "${port}",
+						executable = {
+							command = base,
+							args = { "--port", "${port}" },
+							detached = false,
+						},
+					}
+				end,
+
 				python = function(config)
 					local dap = require("dap")
 
@@ -74,13 +96,32 @@ return {
 						type = "executable",
 						command = get_debugpy_python(),
 						args = { "-m", "debugpy.adapter" },
+						options = {
+							detached = false,
+						},
 					}
 
 					dap.configurations.python = {
 						{
 							type = "python",
 							request = "launch",
-							name = "Launch file (Z-TAS Debug)",
+							name = "Launch file (internalConsole - Stable)",
+							program = "${file}",
+							pythonPath = get_project_python,
+							console = "internalConsole",
+						},
+						{
+							type = "python",
+							request = "launch",
+							name = "Launch file (externalTerminal - Supports Input)",
+							program = "${file}",
+							pythonPath = get_project_python,
+							console = "externalTerminal",
+						},
+						{
+							type = "python",
+							request = "launch",
+							name = "Launch file (integratedTerminal - May crash on Windows :] )",
 							program = "${file}",
 							pythonPath = get_project_python,
 							console = "integratedTerminal",

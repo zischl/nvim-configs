@@ -25,6 +25,7 @@ local opts = {
 		"emmet_ls",
 		"eslint",
 		"jsonls",
+		"neocmake",
 	},
 	automatic_installation = true,
 	automatic_enable = true,
@@ -91,31 +92,22 @@ local opts = {
 		end,
 
 		["neocmake"] = function()
-			local configs = require("lspconfig.configs")
-			local nvim_lsp = require("lspconfig")
-			if not configs.neocmake then
-				configs.neocmake = {
-					default_config = {
-						cmd = { "neocmakelsp", "stdio" },
-						filetypes = { "cmake" },
-						root_dir = function(fname)
-							return nvim_lsp.util.find_git_ancestor(fname)
-						end,
-						single_file_support = true,
-					},
-				}
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
+			capabilities.textDocument = capabilities.textDocument or {}
+			capabilities.textDocument.completion = capabilities.textDocument.completion or {}
+			capabilities.textDocument.completion.completionItem = capabilities.textDocument.completion.completionItem or {}
+			capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-				local capabilities = require("blink.cmp").get_lsp_capabilities()
-				nvim_lsp.neocmake.setup({
-					capabilities = capabilities,
-					on_attach = on_attach,
-					init_options = {
-						format = { enable = true },
-						lint = { enable = true },
-						scan_cmake_in_package = true,
-					},
-				})
-			end
+			require("lspconfig").neocmake.setup({
+				cmd = { "neocmakelsp", "stdio" },
+				capabilities = capabilities,
+				on_attach = on_attach,
+				init_options = {
+					format = { enable = true },
+					lint = { enable = true },
+					scan_cmake_in_package = true,
+				},
+			})
 		end,
 
 		["ts_ls"] = function()

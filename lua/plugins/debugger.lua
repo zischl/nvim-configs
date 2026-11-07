@@ -10,16 +10,14 @@ return {
 					dap_view.setup({})
 
 					dap.listeners.before.attach.dap_view_config = function()
-						dap_view.open()
+						vim.schedule(function()
+							dap_view.open()
+						end)
 					end
 					dap.listeners.before.launch.dap_view_config = function()
-						dap_view.open()
-					end
-					dap.listeners.before.event_terminated.dap_view_config = function()
-						dap_view.close()
-					end
-					dap.listeners.before.event_exited.dap_view_config = function()
-						dap_view.close()
+						vim.schedule(function()
+							dap_view.open()
+						end)
 					end
 				end,
 			},
