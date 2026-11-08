@@ -1,0 +1,38 @@
+return {
+	"folke/persistence.nvim",
+	event = "BufReadPre",
+	opts = {
+		need = 1,
+		branch = true,
+	},
+	keys = {
+		{
+			"<leader>qs",
+			function()
+				require("persistence").load()
+			end,
+			desc = "Restore Session (Current Dir)",
+		},
+		{
+			"<leader>qS",
+			function()
+				require("persistence").select()
+			end,
+			desc = "Select Session (All Workspaces)",
+		},
+		{
+			"<leader>ql",
+			function()
+				require("persistence").load({ last = true })
+			end,
+			desc = "Restore Last Session",
+		},
+		{
+			"<leader>qd",
+			function()
+				require("persistence").stop()
+			end,
+			desc = "Don't Save Current Session",
+		},
+	},
+}
