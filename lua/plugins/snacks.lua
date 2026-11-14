@@ -39,10 +39,43 @@ return {
 	priority = 1000,
 	lazy = false,
 	opts = {
+		picker = {
+			ui_select = true,
+		},
 		dashboard = {
 			enabled = true,
 			width = PANE_WIDTH,
 			pane_gap = 0,
+			formats = {
+				file = function(item, ctx)
+					local FName = vim.fn.fnamemodify(item.file, ":~")
+					local Name = vim.fn.fnamemodify(FName, ":t")
+					local Dir = vim.fn.fnamemodify(FName, ":h")
+
+					if Name == "" or Dir == "." then
+						return { { FName, hl = "file" } }
+					end
+
+					-- Safety margin for long names
+					local MaxDirLen = (ctx.width or 40) - #Name - 6
+					if MaxDirLen <= 0 then
+						return { { Name, hl = "file" } }
+					end
+
+					if #Dir > MaxDirLen then
+						Dir = vim.fn.pathshorten(Dir)
+						if #Dir > MaxDirLen then
+							Dir = "…" .. Dir:sub(-MaxDirLen + 1)
+						end
+					end
+
+					return {
+						{ Name, hl = "file" },
+						{ " " },
+						{ Dir, hl = "dir" },
+					}
+				end,
+			},
 			preset = {
 				header = NvimHeader,
 				keys = {
@@ -54,16 +87,20 @@ return {
 					{
 						icon = " ",
 						key = "p",
-						desc = "Projects / Sessions",
+						desc = "Projects",
 						action = function()
-							require("persistence").select()
+							Snacks.picker.projects()
 						end,
 					},
 					{
 						icon = " ",
 						key = "c",
 						desc = "Config",
-						action = ":lua require('telescope.builtin').find_files({ cwd = vim.fn.stdpath('config') })",
+						action = function()
+							local ConfigDir = vim.fn.stdpath("config")
+							vim.fn.chdir(ConfigDir)
+							require("telescope.builtin").find_files({ cwd = ConfigDir })
+						end,
 					},
 					{ icon = " ", key = "q", desc = "Quit", action = ":qa" },
 				},

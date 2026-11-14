@@ -100,7 +100,6 @@ return {
 				"fallback",
 			},
 			["<C-e>"] = { "hide", "fallback" },
-			["<CR>"] = { "accept", "fallback" },
 
 			["<Tab>"] = {
 				function(cmp)

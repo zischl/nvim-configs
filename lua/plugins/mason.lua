@@ -24,6 +24,7 @@ return {
 				"eslint_d",
 				"stylua",
 				"tree-sitter-cli",
+				"cmakelang",
 			},
 			auto_update = false,
 			run_on_start = true,
