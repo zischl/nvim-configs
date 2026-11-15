@@ -1,99 +1,174 @@
-A plug-and-play Neovim setup designed to work smoothly on Windows or Linux while providing all the essential modern features: autocompletion, snippets, treesitter, telescope, LSP, file explorer, formatting, debugging, UI improvements, and more.
+# nvim-configs
 
-Some plugins in this configuration optionally compile small native modules (e.g., telescope-fzf-native, LuaSnip’s JS regex).  
-To avoid errors, follow the installation steps below.
+A personal Neovim setup tuned for daily development on Windows and Linux. Configured for C/C++ (CMake + Clangd/MSVC), Python, Web/TypeScript, C# (.NET/Avalonia), Go, and Java.
 
-# Requirements 
+Uses [lazy.nvim](https://github.com/folke/lazy.nvim) for package management, [blink.cmp](https://github.com/saghen/blink.cmp) for autocompletion, [snacks.nvim](https://github.com/folke/snacks.nvim) + [persistence.nvim](https://github.com/folke/persistence.nvim) for the dashboard and session management, and [nvim-dap](https://github.com/mfussenegger/nvim-dap) with `nvim-dap-view` for debugging.
 
-Install these tools before launching Neovim for the first time.  
-They ensure plugins can build their optional native components.
+---
 
-## Linux
+## Requirements
 
-```
-# Essential build tools
-sudo apt update
-sudo apt install -y build-essential curl git unzip wget
+Install these prerequisites before launching Neovim so LSPs, formatters, and native plugins compile and run without issues.
 
-# For Tree-sitter C parsers
-sudo apt install -y gcc clang
+### Windows
 
-# Python and pip
-sudo apt install -y python3 python3-pip
+Using `winget` (recommended):
 
-# Node.js and npm (needed for some LSPs and debug adapters)
-sudo apt install -y nodejs npm
-
-# Java (for nvim-jdtls)
-sudo apt install -y openjdk-21-jdk
-
-# ripgrep (optional, for telescope live grep search)
-sudo apt install -y ripgrep
-```
-
-
-## Windows
-
-### 1) git, node.js + npm, python, jdk 21
-``` cmd
+```powershell
+# Core runtimes & CLI tools
 winget install --id Git.Git -e
+winget install --id Neovim.Neovim -e
 winget install --id OpenJS.NodeJS -e
 winget install --id Python.Python.3 -e
-winget install Oracle.JDK.21
-```
-
-### 2) Install Make / Build Tools
-
-for an easier installation use chocolatey, to see if u already have it
-```
-choco -version
-```
-Install Chocolatey (Powershell - Run as administrator since choco install needs perms):
-```
-Set-ExecutionPolicy Bypass -Scope Process -Force; `
-[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; `
-iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-```
-
-AND FOR SOME REASON U DECIDE TO INSTALL CHOCO WITHOUT ADMIN PERMS UNINSTALL CHOCO BY DELETING THIS FOLDER:
-```
-C:\ProgramData\chocolatey
-```
-
-Install build tools using choco:
-```
-choco install make -y
-choco install mingw -y
-```
-
-### 3) Optional but recommended
-```
+winget install --id Oracle.JDK.21 -e
 winget install --id BurntSushi.ripgrep.MSVC -e
+winget install --id sharkdp.fd -e
+winget install --id Kitware.CMake -e
+winget install --id JesseDuffield.lazygit -e
+
+# Rust / Cargo (optional, needed if building blink.cmp from source)
+winget install --id Rustlang.Rustup -e
 ```
 
-### For java lsp and debugging features make sure u have jdk 21 installed and added to path
-Check with : 
+**C/C++ Compiler on Windows:**
+- **Visual Studio 2019/2022** (with "Desktop development with C++") or **Visual Studio Build Tools**.
+  This config has an automatic MSVC detector (`lua/config/msvc.lua`) that finds `vcvarsall.bat` and loads the MSVC environment variables on startup. You do not need to launch Neovim from the Developer Command Prompt.
+- Alternatively, install MinGW/GCC or Clang (`winget install LLVM.LLVM` or `choco install mingw -y`).
+
+### Linux (Ubuntu / Debian)
+
+```bash
+sudo apt update
+sudo apt install -y build-essential curl git unzip wget \
+    gcc clang cmake \
+    python3 python3-pip python3-venv \
+    nodejs npm \
+    openjdk-21-jdk \
+    ripgrep fd-find
 ```
-java -version
+
+Optional tools:
+- `cargo` / Rust (`curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`)
+- `lazygit` (via GitHub releases or package manager)
+
+---
+
+## Installation
+
+### 1. Clone the repository
+
+**Windows (PowerShell):**
+```powershell
+git clone https://github.com/zischl/nvim-configs.git $env:LOCALAPPDATA\nvim
 ```
 
-
-## Installing This Neovim Config
-
-First obv u need to install nvim...
-Clone this repository and move all the files into :
-(create the folder if it doesn't exist)
-```
-%localappdata%\nvim\  
+**Linux / macOS:**
+```bash
+git clone https://github.com/zischl/nvim-configs.git ~/.config/nvim
 ```
 
+### 2. Start Neovim
 
-After installation:
+```bash
+nvim
+```
 
-1. Start Neovim
-2. Lazy.nvim will install all plugins
-3. Optional build steps will automatically run only if `make` + a compiler are installed
+- `lazy.nvim` will automatically download and install plugins.
+- Mason and `mason-tool-installer` will install configured LSPs, formatters, and debug adapters in the background.
 
-* If `make` or a compiler is not installed, plugin builds are skipped automatically — Neovim still works fine.
-* Zig is highly recommended on Windows for its compatibility with C build steps.
-* MSYS2 is optional and mostly for advanced users who want full capabilities.
+### Optional: AI Commit Messages
+For AI commit message generation (`<leader>gc`), set your Gemini API key in your environment:
+- **Windows**: `[System.Environment]::SetEnvironmentVariable('GEMINI_API_KEY', 'your_key', 'User')`
+- **Linux**: `export GEMINI_API_KEY="your_key"` in `~/.bashrc` or `~/.zshrc`.
+
+---
+
+## Keymaps
+
+Leader key is `<Space>`.
+
+### General & Windows
+| Key | Action |
+| --- | --- |
+| `<Space>w` | Save file |
+| `<Space>q` | Close window |
+| `<Space>Q` | Quit all |
+| `<C-a>` | Select all |
+| `<A-j>` / `<A-k>` | Move line down / up |
+| `te` | Open new tab |
+| `<Tab>` / `<S-Tab>` | Next / previous tab |
+| `ss` / `sv` | Horizontal / vertical split |
+| `<leader>bd` | Close current buffer |
+| `<C-/>` | Toggle line comment |
+| `<leader>e` | Toggle file explorer (`nvim-tree`) |
+
+### Search & Navigation
+| Key | Action |
+| --- | --- |
+| `<leader>ff` | Find files (Telescope) |
+| `<leader>fg` | Live grep (Telescope) |
+| `<leader>fb` | Open buffers (Telescope) |
+| `<leader>fd` | Diagnostics (Telescope) |
+| `<leader>sr` | Search & replace hub (`grug-far`) |
+| `<leader>gw` | Search word under cursor (`grug-far`) |
+
+### LSP, Linting & Formatting
+| Key | Action |
+| --- | --- |
+| `gd` | Definition |
+| `gD` | Declaration |
+| `gi` | Implementation |
+| `gr` | References |
+| `K` | Hover docs |
+| `<leader>ca` | Code actions |
+| `<leader>rn` | Incremental rename (`inc-rename`) |
+| `<leader>th` | Toggle inlay hints |
+| `<leader>mp` | Format buffer / selection (`conform.nvim`) |
+| `<leader>l` | Trigger linting (`nvim-lint`) |
+| `<leader>xx` | Workspace diagnostics (`trouble.nvim`) |
+| `<leader>xX` | Buffer diagnostics (`trouble.nvim`) |
+| `]d` / `[d` | Next / previous diagnostic |
+
+### Debugging (DAP)
+| Key | Action |
+| --- | --- |
+| `<leader>dd` | Start / continue debugging |
+| `<leader>dt` | Toggle breakpoint |
+| `<leader>ds` | Step over |
+| `<leader>di` | Step into |
+| `<leader>do` | Step out |
+| `<leader>dp` | Pause debugger |
+| `<leader>dq` | Terminate debugger |
+| `<leader>du` | Toggle DAP UI view (`nvim-dap-view`) |
+
+### Git
+| Key | Action |
+| --- | --- |
+| `<leader>lg` | Open LazyGit |
+| `<leader>gc` | Generate AI commit message (Gemini) |
+| `<leader>hs` | Stage hunk |
+| `<leader>hr` | Reset hunk |
+| `<leader>hu` | Undo stage hunk |
+| `<leader>hp` | Preview hunk |
+| `<leader>hb` | Blame line |
+| `<leader>hd` | Diff current buffer |
+| `<leader>dv` | Diffview menu |
+
+### Sessions (Persistence)
+| Key | Action |
+| --- | --- |
+| `<leader>qs` | Restore session (current directory) |
+| `<leader>ql` | Restore last session |
+| `<leader>qS` | Select session from picker |
+| `<leader>qd` | Don't save current session |
+
+### AI (CodeCompanion)
+| Key | Action |
+| --- | --- |
+| `<leader>cc` | CodeCompanion actions menu |
+| `<leader>ct` | Toggle AI chat |
+
+---
+
+## Extras
+- **Swap Esc & Caps**: `Swap-Esc-Caps.reg` is included in the root folder to swap Caps Lock and Escape on Windows. Run it and log out / restart to apply.
